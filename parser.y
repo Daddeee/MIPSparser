@@ -86,11 +86,14 @@ instruction:
 %%
 
 int main() {
+	int i;
 	vector_init(&v);
 
 	yyin = stdin;
 	yyparse();
 
+	for(i = 0; i < v.size; i++)
+		instruction_dump(v.data[i], stdin);
 }
 
 void yyerror(const char* s) {

@@ -13,6 +13,11 @@ DEFINE_STRING_TO_ENUM(r_instructions, _R_ISTR_LIST)
 DEFINE_STRING_TO_ENUM(j_instructions, _J_ISTR_LIST)
 DEFINE_STRING_TO_ENUM(registers, _REGISTER_LIST)
 
+DEFINE_ENUM_TO_STRING(i_instructions, _I_ISTR_LIST)
+DEFINE_ENUM_TO_STRING(r_instructions, _R_ISTR_LIST)
+DEFINE_ENUM_TO_STRING(j_instructions, _J_ISTR_LIST)
+DEFINE_ENUM_TO_STRING(registers, _REGISTER_LIST)
+
 instruction build_instruction(enum instruction_type t, ...){
 	va_list ap;
 	instruction x;
@@ -39,6 +44,37 @@ instruction build_instruction(enum instruction_type t, ...){
 			break;
 	}
 
+	va_end(ap);
+
 	return x;
 }
 
+void instruction_dump(instruction x, FILE * f){
+	char * instr;
+	char * rd;
+	char * rs;
+	char * rt;
+	int imm;
+
+	switch(x.type){
+		case R:
+			instr = r_instructions_enum_to_string(x.params.r.instr);
+			rd = registers_enum_to_string(x.params.r.rd);
+			rs = registers_enum_to_string(x.params.r.rs);
+			rt = registers_enum_to_string(x.params.r.rt);
+			printf("%s\t%s\t%s\t%s\n", instr, rd, rs, rt);
+			break;
+		case I:
+			instr = i_instructions_enum_to_string(x.params.i.instr);
+			rd = registers_enum_to_string(x.params.i.rd);
+			rs = registers_enum_to_string(x.params.i.rs);
+			imm = x.params.i.imm;
+			printf("%s\t%s\t%s\t%d\n", instr, rd, rs, imm);
+			break;
+		case J:
+			instr = j_instructions_enum_to_string(x.params.j.instr);
+			rd = registers_enum_to_string(x.params.j.rd);
+			printf("%s\t%s\n", instr, rd);
+			break;
+	}
+}

@@ -10,8 +10,6 @@
 	code(I)		\
 	code(J)		\
 
-// why _div and not just div?
-
 #define _R_ISTR_LIST(code)	\
 	code(add)	\
 	code(sub)	\
@@ -90,6 +88,11 @@ DECLARE_STRING_TO_ENUM(r_instructions)
 DECLARE_STRING_TO_ENUM(i_instructions)
 DECLARE_STRING_TO_ENUM(j_instructions)
 
+DECLARE_ENUM_TO_STRING(registers)
+DECLARE_ENUM_TO_STRING(r_instructions)
+DECLARE_ENUM_TO_STRING(i_instructions)
+DECLARE_ENUM_TO_STRING(j_instructions)
+
 //-------------------------------------------------------
 // Basic definitions
 //-------------------------------------------------------
@@ -123,5 +126,6 @@ typedef struct instr_t {
 } instruction;
 
 instruction build_instruction(enum instruction_type, ...);
+void instruction_dump(instruction, FILE *);
 
 #endif
