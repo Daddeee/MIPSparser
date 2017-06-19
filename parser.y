@@ -1,6 +1,7 @@
 %{
 
 #include <stdio.h>
+extern FILE * stdin;
 
 #define div __not_div__
 #include <stdlib.h>
@@ -39,12 +40,13 @@ Vector v;
 
 %%
 
-instructions_sequence: /* nothing */
-	|	instruction instructions_sequence
+instructions_sequence: 	/* nothing */
+	|	instruction
+	|	instruction EOL instructions_sequence
 	;
 
-instruction: 
-		ROPCODE REGISTER REGISTER REGISTER EOL
+instruction:
+		ROPCODE REGISTER REGISTER REGISTER
 		{
 			enum instruction_type t = R;
 			enum r_instructions ropcode = r_instructions_string_to_enum($1);
@@ -54,7 +56,7 @@ instruction:
 			instruction tmp = build_instruction(t, ropcode, rd, rs, rt);
 			vector_append(&v, tmp);
 		}
-	|	IOPCODE REGISTER REGISTER IMMEDIATE EOL
+	|	IOPCODE REGISTER REGISTER IMMEDIATE
 		{
 			enum instruction_type t = I;
 			enum i_instructions iopcode = i_instructions_string_to_enum($1);
@@ -64,7 +66,7 @@ instruction:
 			instruction tmp = build_instruction(t, iopcode, rd, rs, imm);
 			vector_append(&v, tmp);
 		}
-	|	IMOPCODE REGISTER IMMEDIATE OBRACKET REGISTER CBRACKET EOL
+	|	IMOPCODE REGISTER IMMEDIATE OBRACKET REGISTER CBRACKET
 		{
 			enum instruction_type t = I;
 			enum i_instructions iopcode = i_instructions_string_to_enum($1);
@@ -74,7 +76,7 @@ instruction:
 			instruction tmp = build_instruction(t, iopcode, rd, rs, imm);
 			vector_append(&v, tmp);
 		}
-	|	JOPCODE REGISTER EOL
+	|	JOPCODE REGISTER
 		{
 			enum instruction_type t = J;
 			enum j_instructions jopcode = j_instructions_string_to_enum($1);

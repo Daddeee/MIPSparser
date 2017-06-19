@@ -43,17 +43,15 @@ J_INSTRUCTION ("j"|"jal")
 
 %%
 
-^{R_INSTRUCTION}		{ BEGIN(MATCHING_R); yylval.tval = strdup(yytext); return ROPCODE; }
-^{J_INSTRUCTION}		{ BEGIN(MATCHING_J); yylval.tval = strdup(yytext); return JOPCODE; }
-^{I_INSTRUCTION}		{ BEGIN(MATCHING_I); yylval.tval = strdup(yytext); return IOPCODE; }
-^{I_MEM_INSTRUCTION}	{ BEGIN(MATCHING_I); yylval.tval = strdup(yytext); return IMOPCODE; }
+^{R_INSTRUCTION}		{ yylval.tval = strdup(yytext); return ROPCODE; }
+^{J_INSTRUCTION}		{ yylval.tval = strdup(yytext); return JOPCODE; }
+^{I_INSTRUCTION}		{ yylval.tval = strdup(yytext); return IOPCODE; }
+^{I_MEM_INSTRUCTION}	{ yylval.tval = strdup(yytext); return IMOPCODE; }
 
-<MATCHING_R>{REGISTER}	{ yylval.tval = strdup(yytext); return REGISTER; }
-<MATCHING_I>{REGISTER}	{ yylval.tval = strdup(yytext); return REGISTER; }
-<MATCHING_I>{IMMEDIATE}	{ yylval.ival = atoi(yytext); return IMMEDIATE; }
-<MATCHING_J>{REGISTER}	{ yylval.tval = strdup(yytext); return REGISTER; }
+{REGISTER}	{ yylval.tval = strdup(yytext); return REGISTER; }
+{IMMEDIATE}	{ yylval.ival = atoi(yytext); return IMMEDIATE; }
 
-\n 						{ BEGIN(INITIAL); return EOL; }
+\n 						{ return EOL; }
 [ \t]+					{ /* Ignoring whitespaces and tabs */ }
 \(						{ yylval.tval = strdup(yytext); return OBRACKET; }
 \)						{ yylval.tval = strdup(yytext); return CBRACKET; }
