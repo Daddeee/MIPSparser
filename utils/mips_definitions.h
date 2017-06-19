@@ -26,6 +26,7 @@
 
 #define _I_ISTR_LIST(code)	\
 	code(addi)	\
+	code(subi)  \
 	code(andi)	\
 	code(ori)	\
 	code(xori)	\
