@@ -94,6 +94,8 @@ int main() {
 	yyin = stdin;
 	yyparse();
 
+
+	//Modificare qui !!
 	for(i = 0; i < v.size; i++)
 		instruction_dump(v.data[i], stdin);
 }
