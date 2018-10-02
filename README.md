@@ -7,6 +7,4 @@ simply use:
 
 Example usage:
 
-	./parser < input_file.asm
-
-Parse a mips assembly file.
+	./parser < sample.asm
